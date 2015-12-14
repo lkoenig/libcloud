@@ -904,13 +904,17 @@ class NodeDriver(BaseDriver):
 
         ssh_interface = kwargs.get('ssh_interface', 'public_ips')
 
+        ex_list_nodes_kwargs = kwargs.get('ex_list_nodes_kwargs', dict())
+
         # Wait until node is up and running and has IP assigned
         try:
             node, ip_addresses = self.wait_until_running(
                 nodes=[node],
                 wait_period=3,
                 timeout=kwargs.get('timeout', NODE_ONLINE_WAIT_TIMEOUT),
-                ssh_interface=ssh_interface)[0]
+                ssh_interface=ssh_interface,
+                ex_list_nodes_kwargs=ex_list_nodes_kwargs,
+            )[0]
         except Exception:
             e = sys.exc_info()[1]
             raise DeploymentError(node=node, original_exception=e, driver=self)
